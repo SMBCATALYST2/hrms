@@ -35,11 +35,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import {
   useOKRCycles,
   useObjectives,
   useCreateObjective,
@@ -92,97 +87,101 @@ function ObjectiveCard({
 
   return (
     <div style={{ marginLeft: `${level * 24}px` }}>
-      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <Card
-          className="cursor-pointer hover:shadow-md transition-shadow mb-2"
-          onClick={() => onClick(objective.id)}
-        >
-          <CardContent className="p-4">
-            <div className="flex items-start gap-3">
-              {/* Expand/Collapse */}
-              {hasChildren ? (
-                <CollapsibleTrigger asChild onClick={(e) => e.stopPropagation()}>
-                  <Button variant="ghost" size="icon" className="h-6 w-6 mt-0.5">
-                    {isOpen ? (
-                      <ChevronDown className="h-4 w-4" />
-                    ) : (
-                      <ChevronRight className="h-4 w-4" />
-                    )}
-                  </Button>
-                </CollapsibleTrigger>
-              ) : (
-                <div className="w-6" />
-              )}
+      <Card
+        className="cursor-pointer hover:shadow-md transition-shadow mb-2"
+        onClick={() => onClick(objective.id)}
+      >
+        <CardContent className="p-4">
+          <div className="flex items-start gap-3">
+            {/* Expand/Collapse */}
+            {hasChildren ? (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-6 w-6 mt-0.5"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsOpen(!isOpen);
+                }}
+              >
+                {isOpen ? (
+                  <ChevronDown className="h-4 w-4" />
+                ) : (
+                  <ChevronRight className="h-4 w-4" />
+                )}
+              </Button>
+            ) : (
+              <div className="w-6" />
+            )}
 
-              {/* Content */}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <Target className="h-4 w-4 text-primary flex-shrink-0" />
-                      <h3 className="text-sm font-semibold truncate">
-                        {objective.title}
-                      </h3>
-                    </div>
-
-                    {objective.owner_name && (
-                      <p className="text-xs text-muted-foreground mb-2">
-                        Owner: {objective.owner_name}
-                      </p>
-                    )}
-
-                    {/* Progress */}
-                    <div className="flex items-center gap-3">
-                      <Progress
-                        value={objective.progress}
-                        className="flex-1 h-2"
-                      />
-                      <span className="text-xs font-medium w-10 text-right">
-                        {objective.progress}%
-                      </span>
-                    </div>
+            {/* Content */}
+            <div className="flex-1 min-w-0">
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Target className="h-4 w-4 text-primary flex-shrink-0" />
+                    <h3 className="text-sm font-semibold truncate">
+                      {objective.title}
+                    </h3>
                   </div>
 
-                  <div className="flex items-center gap-2 flex-shrink-0">
-                    <StatusBadge status={objective.status} />
-                    <Badge
-                      variant="outline"
-                      className={cn(
-                        "text-xs border-0",
-                        priorityColors[objective.priority]
-                      )}
-                    >
-                      {objective.priority}
-                    </Badge>
+                  {objective.owner_name && (
+                    <p className="text-xs text-muted-foreground mb-2">
+                      Owner: {objective.owner_name}
+                    </p>
+                  )}
+
+                  {/* Progress */}
+                  <div className="flex items-center gap-3">
+                    <Progress
+                      value={objective.progress}
+                      className="flex-1 h-2"
+                    />
+                    <span className="text-xs font-medium w-10 text-right">
+                      {objective.progress}%
+                    </span>
                   </div>
                 </div>
 
-                {/* Key Results Count */}
-                {krCount > 0 && (
-                  <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
-                    <Key className="h-3 w-3" />
-                    {krCount} key result{krCount !== 1 ? "s" : ""}
-                  </div>
-                )}
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <StatusBadge status={objective.status} />
+                  <Badge
+                    variant="outline"
+                    className={cn(
+                      "text-xs border-0",
+                      priorityColors[objective.priority]
+                    )}
+                  >
+                    {objective.priority}
+                  </Badge>
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
 
-        {/* Children */}
-        {hasChildren && (
-          <CollapsibleContent>
-            {objective.children!.map((child) => (
-              <ObjectiveCard
-                key={child.id}
-                objective={child}
-                level={level + 1}
-                onClick={onClick}
-              />
-            ))}
-          </CollapsibleContent>
-        )}
-      </Collapsible>
+              {/* Key Results Count */}
+              {krCount > 0 && (
+                <div className="flex items-center gap-1 mt-2 text-xs text-muted-foreground">
+                  <Key className="h-3 w-3" />
+                  {krCount} key result{krCount !== 1 ? "s" : ""}
+                </div>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Children */}
+      {hasChildren && isOpen && (
+        <div>
+          {objective.children!.map((child) => (
+            <ObjectiveCard
+              key={child.id}
+              objective={child}
+              level={level + 1}
+              onClick={onClick}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
