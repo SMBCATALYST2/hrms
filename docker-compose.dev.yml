@@ -1,0 +1,17 @@
+# Development overrides — use with: docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+services:
+  api:
+    volumes:
+      - ./api:/app
+      - /app/.venv  # prevent overwriting container venv
+    environment:
+      ENVIRONMENT: development
+      LOG_LEVEL: debug
+
+  db:
+    ports:
+      - "5432:5432"
+
+  redis:
+    ports:
+      - "6379:6379"
