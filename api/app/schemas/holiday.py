@@ -1,7 +1,9 @@
 """Request/response schemas for the Holiday module."""
 
 import uuid
-from datetime import date, datetime
+from datetime import date as DateType
+from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -44,7 +46,7 @@ class HolidayCreate(BaseModel):
     """Payload for creating a holiday."""
 
     holiday_calendar_id: uuid.UUID
-    date: date
+    date: DateType
     name: str = Field(..., min_length=1, max_length=200)
     type: str = Field(default="mandatory", pattern="^(mandatory|optional|restricted)$")
     is_half_day: bool = False
@@ -53,7 +55,7 @@ class HolidayCreate(BaseModel):
 class HolidayUpdate(BaseModel):
     """Partial update payload for a holiday."""
 
-    date: date | None = None
+    date: DateType | None = None
     name: str | None = None
     type: str | None = None
     is_half_day: bool | None = None
@@ -66,7 +68,7 @@ class HolidayResponse(BaseModel):
 
     id: uuid.UUID
     holiday_calendar_id: uuid.UUID
-    date: date
+    date: DateType
     name: str
     type: str
     is_half_day: bool

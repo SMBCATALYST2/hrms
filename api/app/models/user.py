@@ -43,11 +43,13 @@ class User(Base, TimestampMixin):
     employee: Mapped[Optional["Employee"]] = relationship(
         "Employee",
         back_populates="user",
+        foreign_keys=[employee_id],
         lazy="selectin",
     )
     user_roles: Mapped[list["UserRole"]] = relationship(
         "UserRole",
         back_populates="user",
+        foreign_keys="[UserRole.user_id]",
         lazy="selectin",
         cascade="all, delete-orphan",
     )

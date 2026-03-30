@@ -25,7 +25,7 @@ class HolidayCalendar(Base, TimestampMixin):
     __tablename__ = "holiday_calendar"
 
     tenant_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("tenant.id"), nullable=False, index=True
+        UUID(as_uuid=True), ForeignKey("company.id"), nullable=False, index=True
     )
     company_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("company.id"), nullable=False

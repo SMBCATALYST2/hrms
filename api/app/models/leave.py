@@ -34,7 +34,7 @@ class LeaveType(Base, TimestampMixin):
     )
 
     tenant_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("tenant.id"), nullable=False, index=True
+        UUID(as_uuid=True), ForeignKey("company.id"), nullable=False, index=True
     )
     company_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("company.id"), nullable=False
@@ -72,7 +72,7 @@ class LeavePolicy(Base, TimestampMixin):
     __tablename__ = "leave_policy"
 
     tenant_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("tenant.id"), nullable=False, index=True
+        UUID(as_uuid=True), ForeignKey("company.id"), nullable=False, index=True
     )
     company_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("company.id"), nullable=False
@@ -122,7 +122,7 @@ class LeaveBalance(Base, TimestampMixin):
     )
 
     tenant_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("tenant.id"), nullable=False, index=True
+        UUID(as_uuid=True), ForeignKey("company.id"), nullable=False, index=True
     )
     employee_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("employee.id"), nullable=False, index=True
@@ -165,7 +165,7 @@ class LeaveApplication(Base, TimestampMixin):
     __tablename__ = "leave_application"
 
     tenant_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("tenant.id"), nullable=False, index=True
+        UUID(as_uuid=True), ForeignKey("company.id"), nullable=False, index=True
     )
     employee_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("employee.id"), nullable=False, index=True
@@ -182,7 +182,7 @@ class LeaveApplication(Base, TimestampMixin):
     total_days: Mapped[Decimal] = mapped_column(Numeric(5, 1), nullable=False)
     reason: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     attachment_file_id: Mapped[Optional[uuid.UUID]] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("file_upload.id"), nullable=True
+        UUID(as_uuid=True), nullable=True
     )
     status: Mapped[str] = mapped_column(
         String(20), nullable=False, default="pending"
@@ -206,7 +206,7 @@ class CompensatoryOff(Base):
     __tablename__ = "compensatory_off"
 
     tenant_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("tenant.id"), nullable=False, index=True
+        UUID(as_uuid=True), ForeignKey("company.id"), nullable=False, index=True
     )
     employee_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("employee.id"), nullable=False, index=True

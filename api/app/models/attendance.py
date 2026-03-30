@@ -32,7 +32,7 @@ class Shift(Base, TimestampMixin):
     __tablename__ = "shift"
 
     tenant_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("tenant.id"), nullable=False, index=True
+        UUID(as_uuid=True), ForeignKey("company.id"), nullable=False, index=True
     )
     company_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("company.id"), nullable=False
@@ -86,7 +86,7 @@ class AttendanceRecord(Base, TimestampMixin):
     )
 
     tenant_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("tenant.id"), nullable=False, index=True
+        UUID(as_uuid=True), ForeignKey("company.id"), nullable=False, index=True
     )
     employee_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("employee.id"), nullable=False, index=True
@@ -124,7 +124,7 @@ class AttendancePunch(Base):
     __tablename__ = "attendance_punch"
 
     tenant_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("tenant.id"), nullable=False, index=True
+        UUID(as_uuid=True), ForeignKey("company.id"), nullable=False, index=True
     )
     employee_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("employee.id"), nullable=False, index=True
@@ -151,7 +151,7 @@ class AttendanceRegularization(Base, TimestampMixin):
     __tablename__ = "attendance_regularization"
 
     tenant_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("tenant.id"), nullable=False, index=True
+        UUID(as_uuid=True), ForeignKey("company.id"), nullable=False, index=True
     )
     employee_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("employee.id"), nullable=False, index=True
@@ -183,7 +183,7 @@ class OvertimePolicy(Base):
     __tablename__ = "overtime_policy"
 
     tenant_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("tenant.id"), nullable=False, index=True
+        UUID(as_uuid=True), ForeignKey("company.id"), nullable=False, index=True
     )
     company_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("company.id"), nullable=False
@@ -208,7 +208,7 @@ class OvertimeEntry(Base):
     __tablename__ = "overtime_entry"
 
     tenant_id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), ForeignKey("tenant.id"), nullable=False, index=True
+        UUID(as_uuid=True), ForeignKey("company.id"), nullable=False, index=True
     )
     employee_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("employee.id"), nullable=False, index=True

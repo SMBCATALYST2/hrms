@@ -1,7 +1,8 @@
 """Request/response schemas for the Attendance module."""
 
 import uuid
-from datetime import date, datetime, time
+from datetime import date as DateType
+from datetime import datetime, time
 from decimal import Decimal
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -27,7 +28,7 @@ class CheckOutRequest(BaseModel):
 class RegularizationRequest(BaseModel):
     """Payload for attendance regularization request."""
 
-    date: date
+    date: DateType
     requested_status: str = Field(..., pattern="^(present|half_day|work_from_home|on_duty)$")
     requested_check_in: datetime | None = None
     requested_check_out: datetime | None = None
@@ -47,7 +48,7 @@ class AttendanceRecordResponse(BaseModel):
 
     id: uuid.UUID
     employee_id: uuid.UUID
-    date: date
+    date: DateType
     check_in_time: datetime | None = None
     check_out_time: datetime | None = None
     check_in_source: str | None = None
@@ -88,7 +89,7 @@ class RegularizationResponse(BaseModel):
 
     id: uuid.UUID
     employee_id: uuid.UUID
-    date: date
+    date: DateType
     original_status: str | None = None
     requested_status: str
     requested_check_in: datetime | None = None

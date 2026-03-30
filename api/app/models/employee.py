@@ -147,6 +147,7 @@ class Employee(Base, TimestampMixin, AuditMixin):
     user: Mapped[Optional["User"]] = relationship(
         "User",
         back_populates="employee",
+        foreign_keys="[User.employee_id]",
         uselist=False,
         lazy="noload",
     )
