@@ -41,21 +41,26 @@ class Department(Base, TimestampMixin):
     status: Mapped[str] = mapped_column(String(20), nullable=False, default="active")
 
     # Relationships
-    company: Mapped["Company"] = relationship("Company", back_populates="departments")  # noqa: F821
+    company: Mapped["Company"] = relationship(
+        "Company", back_populates="departments", foreign_keys=[company_id],
+    )  # noqa: F821
     parent_department: Mapped[Optional["Department"]] = relationship(
         "Department",
         remote_side="Department.id",
+        foreign_keys=[parent_department_id],
         back_populates="sub_departments",
         lazy="selectin",
     )
     sub_departments: Mapped[list["Department"]] = relationship(
         "Department",
+        foreign_keys=[parent_department_id],
         back_populates="parent_department",
         lazy="noload",
     )
     employees: Mapped[list["Employee"]] = relationship(  # noqa: F821
         "Employee",
         back_populates="department",
+        foreign_keys="[Employee.department_id]",
         lazy="noload",
     )
 

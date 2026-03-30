@@ -26,6 +26,7 @@ class Designation(Base, TimestampMixin):
     employees: Mapped[list["Employee"]] = relationship(  # noqa: F821
         "Employee",
         back_populates="designation",
+        foreign_keys="[Employee.designation_id]",
         lazy="noload",
     )
 

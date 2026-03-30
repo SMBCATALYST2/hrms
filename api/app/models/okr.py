@@ -73,9 +73,11 @@ class Objective(Base, TimestampMixin):
     cycle: Mapped["OKRCycle"] = relationship(back_populates="objectives")
     key_results: Mapped[list["KeyResult"]] = relationship(back_populates="objective")
     parent: Mapped[Optional["Objective"]] = relationship(
-        remote_side="Objective.id", back_populates="children"
+        remote_side="Objective.id", foreign_keys=[parent_objective_id], back_populates="children"
     )
-    children: Mapped[list["Objective"]] = relationship(back_populates="parent")
+    children: Mapped[list["Objective"]] = relationship(
+        foreign_keys=[parent_objective_id], back_populates="parent"
+    )
 
 
 class KeyResult(Base, TimestampMixin):

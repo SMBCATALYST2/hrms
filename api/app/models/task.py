@@ -59,10 +59,11 @@ class Task(Base, TimestampMixin):
         back_populates="task", cascade="all, delete-orphan"
     )
     subtasks: Mapped[list["Task"]] = relationship(
+        foreign_keys=[parent_task_id],
         back_populates="parent_task",
     )
     parent_task: Mapped[Optional["Task"]] = relationship(
-        remote_side="Task.id", back_populates="subtasks"
+        remote_side="Task.id", foreign_keys=[parent_task_id], back_populates="subtasks"
     )
 
 

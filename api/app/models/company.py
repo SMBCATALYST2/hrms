@@ -42,11 +42,13 @@ class Company(Base, TimestampMixin):
     departments: Mapped[list["Department"]] = relationship(  # noqa: F821
         "Department",
         back_populates="company",
+        foreign_keys="[Department.company_id]",
         lazy="selectin",
     )
     employees: Mapped[list["Employee"]] = relationship(  # noqa: F821
         "Employee",
         back_populates="company",
+        foreign_keys="[Employee.company_id]",
         lazy="noload",
     )
 

@@ -126,12 +126,14 @@ class Employee(Base, TimestampMixin, AuditMixin):
     profile_photo_url: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
     # Relationships
-    company: Mapped["Company"] = relationship("Company", back_populates="employees", lazy="selectin")
+    company: Mapped["Company"] = relationship(
+        "Company", back_populates="employees", foreign_keys=[company_id], lazy="selectin",
+    )
     department: Mapped[Optional["Department"]] = relationship(
-        "Department", back_populates="employees", lazy="selectin",
+        "Department", back_populates="employees", foreign_keys=[department_id], lazy="selectin",
     )
     designation: Mapped[Optional["Designation"]] = relationship(
-        "Designation", back_populates="employees", lazy="selectin",
+        "Designation", back_populates="employees", foreign_keys=[designation_id], lazy="selectin",
     )
     reporting_manager: Mapped[Optional["Employee"]] = relationship(
         "Employee",
