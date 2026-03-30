@@ -141,7 +141,7 @@ class LeaveBalance(Base, TimestampMixin):
     lapsed: Mapped[Decimal] = mapped_column(Numeric(5, 1), nullable=False, default=0)
 
     # Relationships
-    employee: Mapped["Employee"] = relationship(back_populates="leave_balances")
+    employee: Mapped["Employee"] = relationship()
     leave_type: Mapped["LeaveType"] = relationship(back_populates="balances")
 
     @property
@@ -196,7 +196,7 @@ class LeaveApplication(Base, TimestampMixin):
     rejection_reason: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
     # Relationships
-    employee: Mapped["Employee"] = relationship(back_populates="leave_applications")
+    employee: Mapped["Employee"] = relationship()
     leave_type: Mapped["LeaveType"] = relationship(back_populates="applications")
 
 

@@ -3,14 +3,19 @@
 import asyncio
 import uuid
 
+import bcrypt
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import create_async_engine
 
 from app.core.config import settings
-from app.core.security import hash_password
 from app.models.base import Base
 # Import all models so metadata knows about all tables
 import app.models  # noqa: F401
+
+
+def hash_password(password: str) -> str:
+    """Hash password using bcrypt directly (avoids passlib compatibility issues)."""
+    return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
 
 
 async def main() -> None:
@@ -62,8 +67,8 @@ async def main() -> None:
         for dept_name in ["Human Resources", "Engineering", "Sales", "Marketing",
                           "Finance", "Operations", "Product", "Design"]:
             await conn.execute(text(
-                "INSERT INTO department (id, name, company_id) "
-                "VALUES (:id, :name, :cid)"
+                "INSERT INTO department (id, name, company_id, status) "
+                "VALUES (:id, :name, :cid, 'active')"
             ), {"id": uuid.uuid4(), "name": dept_name, "cid": company_id})
 
         # --- Designations ---
@@ -72,7 +77,7 @@ async def main() -> None:
                       "Product Manager", "Designer", "Sales Executive",
                       "Finance Manager", "Intern"]:
             await conn.execute(text(
-                "INSERT INTO designation (id, name) VALUES (:id, :name)"
+                "INSERT INTO designation (id, name, status) VALUES (:id, :name, 'active')"
             ), {"id": uuid.uuid4(), "name": title})
 
         # --- Users ---
@@ -88,8 +93,9 @@ async def main() -> None:
             user_id = uuid.uuid4()
             pw_hash = hash_password(password)
             await conn.execute(text(
-                "INSERT INTO \"user\" (id, email, password_hash, is_active, is_email_verified) "
-                "VALUES (:id, :email, :pw, true, true)"
+                "INSERT INTO \"user\" (id, email, password_hash, is_active, is_email_verified, "
+                "mfa_enabled, login_attempts) "
+                "VALUES (:id, :email, :pw, true, true, false, 0)"
             ), {"id": user_id, "email": email, "pw": pw_hash})
 
             await conn.execute(text(

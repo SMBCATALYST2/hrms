@@ -73,7 +73,7 @@ class ShiftAssignment(Base):
     )
 
     # Relationships
-    employee: Mapped["Employee"] = relationship(back_populates="shift_assignments")
+    employee: Mapped["Employee"] = relationship()
     shift: Mapped["Shift"] = relationship(back_populates="assignments")
 
 
@@ -114,7 +114,7 @@ class AttendanceRecord(Base, TimestampMixin):
     remarks: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
 
     # Relationships
-    employee: Mapped["Employee"] = relationship(back_populates="attendance_records")
+    employee: Mapped["Employee"] = relationship()
     shift: Mapped[Optional["Shift"]] = relationship(back_populates="attendance_records")
 
 
