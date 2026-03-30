@@ -52,10 +52,11 @@ async def main() -> None:
         # --- Company ---
         company_id = uuid.uuid4()
         await conn.execute(text(
-            "INSERT INTO company (id, name, legal_name, country) "
-            "VALUES (:id, :name, :legal_name, :country)"
+            "INSERT INTO company (id, name, legal_name, country, fiscal_year_start_month, status) "
+            "VALUES (:id, :name, :legal_name, :country, :fym, :status)"
         ), {"id": company_id, "name": "SMB Catalyst Demo",
-            "legal_name": "SMB Catalyst Pvt. Ltd.", "country": "India"})
+            "legal_name": "SMB Catalyst Pvt. Ltd.", "country": "India",
+            "fym": 4, "status": "active"})
 
         # --- Departments ---
         for dept_name in ["Human Resources", "Engineering", "Sales", "Marketing",
