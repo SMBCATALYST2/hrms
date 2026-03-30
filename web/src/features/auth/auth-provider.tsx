@@ -19,7 +19,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
     if (token) {
       authService
         .getMe()
-        .then(setUser)
+        .then((meData: any) => {
+          setUser({
+            id: meData.id,
+            email: meData.email,
+            full_name: meData.full_name || meData.email.split("@")[0],
+            avatar_url: meData.avatar_url,
+            role: meData.role || (meData.roles && meData.roles[0]) || "employee",
+            employee_id: meData.employee_id,
+            is_active: meData.is_active,
+            permissions: meData.permissions || [],
+            created_at: meData.created_at,
+          });
+        })
         .catch(() => {
           localStorage.removeItem("access_token");
           localStorage.removeItem("refresh_token");
@@ -34,7 +46,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const response = await authService.login({ email, password });
     localStorage.setItem("access_token", response.access_token);
     localStorage.setItem("refresh_token", response.refresh_token);
-    setUser(response.user);
+    // Fetch user profile after storing tokens
+    const meData: any = await authService.getMe();
+    // Map API response to frontend User shape
+    setUser({
+      id: meData.id,
+      email: meData.email,
+      full_name: meData.full_name || meData.email.split("@")[0],
+      avatar_url: meData.avatar_url,
+      role: meData.role || (meData.roles && meData.roles[0]) || "employee",
+      employee_id: meData.employee_id,
+      is_active: meData.is_active,
+      permissions: meData.permissions || [],
+      created_at: meData.created_at,
+    });
   };
 
   const logout = async () => {
