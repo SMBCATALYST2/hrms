@@ -109,7 +109,7 @@ class KeyResult(Base, TimestampMixin):
 
     # Relationships
     objective: Mapped["Objective"] = relationship(back_populates="key_results")
-    check_ins: Mapped[list["OKRCheckIn"]] = relationship(back_populates="key_result")
+    check_ins: Mapped[list["OKRCheckIn"]] = relationship()
 
 
 class OKRCheckIn(Base, TimestampMixin):
