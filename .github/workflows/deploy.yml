@@ -15,4 +15,10 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script_stop: true
-          script: /opt/hrms/deploy/deploy.sh
+          command_timeout: 10m
+          script: |
+            cd /opt/hrms
+            git fetch origin main
+            git reset --hard origin/main
+            chmod +x deploy/deploy.sh
+            bash deploy/deploy.sh

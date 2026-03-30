@@ -4,10 +4,6 @@ set -e
 echo "=== HRMS Deploy Started ==="
 cd /opt/hrms
 
-# Pull latest code
-git fetch origin main
-git reset --hard origin/main
-
 # Apply production patches
 sed -i 's/libgdk-pixbuf2.0-0/libgdk-pixbuf-2.0-0/' api/Dockerfile
 sed -i 's/hrms_dev_password/hrms_demo_secure_2024/g' docker-compose.yml
